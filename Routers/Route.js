@@ -1,6 +1,6 @@
 const express = require('express');
-const UserController = require('../Controllers/Usecontroller');
 const router = express.Router();
+const UserController = require('../Controllers/Usecontroller');
 
 router.get('/allusers', UserController.getAllUsers);
 router.post('/allWords', UserController.searchWords);

@@ -23,6 +23,7 @@ class UserModel {
     })
   }
 
+
   static getSentence(){
     return new Promise((resolve , reject) =>{
       db.query('SELECT * FROM sentences' ,[],(error , result) =>{
@@ -33,6 +34,7 @@ class UserModel {
       })
     })
   }
+
 
   static addNewUser(kana, meaning, short, writings) {
     return new Promise((resolve, reject) => {

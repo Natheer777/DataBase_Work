@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 // const db = require('./Config/Dbnode')
 const cors = require('cors');
 const path = require('path');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const axios = require('axios');
 // const fs = require('fs')
 const mammoth = require("mammoth");
@@ -15,6 +15,8 @@ const NodeCache = require('node-cache')
 const { v4: uuidv4 } = require('uuid');
 const iconv = require('iconv-lite');
 const session = require('express-session');
+const { google } = require('googleapis');
+
 
 
 
@@ -39,7 +41,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(router);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,7 @@ app.use(
     cookie: { secure: false, maxAge: 60000 * 30 }, // 30 minutes
   })
 );
+app.use(router);
 
 // MySQL connection pool
 const db = mysql.createPool({
@@ -58,6 +60,7 @@ const db = mysql.createPool({
   user: 'u229294786_UKHrI',
   password: 'Sawa2020!',
   database: 'u229294786_JZfqq',
+
 });
 
 // Middleware to check authentication
@@ -260,8 +263,6 @@ app.post('/change-credentials', (req, res) => {
 
 
 
-const { google } = require('googleapis');
-// const NodeCache = require('node-cache');
 const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 });
 
 const sheets = google.sheets('v4');
