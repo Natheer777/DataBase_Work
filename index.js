@@ -31,6 +31,7 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   }
+  
 }));
 
 
@@ -267,9 +268,10 @@ const sheets = google.sheets('v4');
 
 // إعداد أوراق جوجل API
 const auth = new google.auth.GoogleAuth({
-  keyFile: '../server/secret/data-427402-e73575f83918.json',
+  keyFile: '../server/secret/data-427402-3b93d1a9a380.json',
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
 });
+
 
 
 app.post('/api/excel', async (req, res) => {
