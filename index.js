@@ -23,17 +23,29 @@ const { google } = require('googleapis');
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors());
+// app.use(cors());
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   }
+  
+// }));
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
+    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
+      console.error(`Blocked by CORS: Origin ${origin} is not allowed.`);
       callback(new Error('Not allowed by CORS'));
     }
   }
-  
 }));
 
 
