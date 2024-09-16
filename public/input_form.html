@@ -1,0 +1,38 @@
+<!-- public/input_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <h1>Add New Words</h1>
+    <form action="/addusers" method="POST">
+        <label for="name">kana :</label>
+        <input type="text" id="kana" name="kana" ><br><br>
+
+        <label for="meaning_summary">meaning_summary :</label>
+        <input type="text" id="meaning_summary" name="meaning_summary" ><br><br>
+
+        <label for="short_meaning_summary">short_meaning_summary :</label>
+        <input type="text" id="short_meaning_summary" name="short_meaning_summary" ><br><br>
+
+        <button type="submit">add Word</button>
+    </form>
+    
+    <a href="https://database-work.onrender.com/allusers" target="_blank">
+        <button>رؤية البيانات</button>
+    </a>
+    <a href="https://database-work.onrender.com/delete" target="_blank">
+        <button>حذف البيانات</button>
+    </a>
+    <a href="https://database-work.onrender.com/edite" target="_blank">
+        <button>تعديل البيانات</button>
+    </a>
+    <!-- Display success or error message here -->
+
+</body>
+</html>
