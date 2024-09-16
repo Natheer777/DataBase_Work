@@ -22,7 +22,7 @@ const { google } = require('googleapis');
 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 // app.use(cors());
 // app.use(cors({
 //   origin: function (origin, callback) {
@@ -38,7 +38,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000','https://accounts.google.com/o/oauth2/auth','https://oauth2.googleapis.com/token' ,'googleapis.com']
+    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000','https://accounts.google.com','https://oauth2.googleapis.com' ,'googleapis.com']
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
@@ -218,74 +218,7 @@ app.post('/change-credentials', (req, res) => {
 
 
 
-// const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 }); // تقليل مدة الكاش
-
-// app.post('/api/excel', async (req, res) => {
-//   try {
-//     const cacheKey = 'spreadsheetDataEncrypted';
-//     const cachedData = cache.get(cacheKey);
-
-//     if (cachedData) {
-//       return res.json({ data: cachedData });
-//     }
-
-//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-//       responseType: 'arraybuffer',
-//     });
-
-//     const workbook = xlsx.read(response.data, { type: 'buffer' });
-//     const sheetName = 'sawa';
-//     const sheet = workbook.Sheets[sheetName];
-//     let jsonData = [];
-
-//     if (sheet) {
-//       const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-//       const headers = data[0];
-//       const rows = data.slice(1);
-//       jsonData = rows.map(row => {
-//         let obj = {};
-//         row.forEach((cell, i) => {
-//           obj[headers[i]] = cell;
-//         });
-
-//         const hasValues = Object.values(obj).some(value => value && value.toString().trim() !== '');
-//         return hasValues ? obj : null;
-//       }).filter(row => row !== null);
-//     }
-
-//     const result = {
-//       Items: jsonData,
-//       TotalResults: jsonData.length,
-//       TotalPages: Math.ceil(jsonData.length / 10)
-//     };
-
-//     // const secretKey = 'sawa2020!';
-//     // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
-
-//     // cache.set(cacheKey, encryptedResult);
-
-//     res.json({ data: result });
-//   } catch (error) {
-//     console.error('Error fetching or processing the Excel file:', error.message);
-//     res.status(500).send('Error fetching or processing the Excel file.');
-
-//   }
-// });
-
-
-
-
-const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 });
-
-const sheets = google.sheets('v4');
-
-// إعداد أوراق جوجل API
-const auth = new google.auth.GoogleAuth({
-  keyFile: '../server/secret/data-427402-2096509aa9d6.json',
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
-
+const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 }); // تقليل مدة الكاش
 
 app.post('/api/excel', async (req, res) => {
   try {
@@ -296,30 +229,25 @@ app.post('/api/excel', async (req, res) => {
       return res.json({ data: cachedData });
     }
 
-    const client = await auth.getClient();
-    const spreadsheetId = '16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE'; // معرّف Google Sheet
-    const range = 'sawa'; // اسم الورقة أو النطاق الذي تريد استدعاءه
-
-    const response = await sheets.spreadsheets.values.get({
-      auth: client,
-      spreadsheetId,
-      range,
+    const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
+      responseType: 'arraybuffer',
     });
 
-    const rows = response.data.values;
+    const workbook = xlsx.read(response.data, { type: 'buffer' });
+    const sheetName = 'sawa';
+    const sheet = workbook.Sheets[sheetName];
     let jsonData = [];
 
-    if (rows.length) {
-      const headers = rows[0]; // الصف الأول هو العناوين
-      const dataRows = rows.slice(1); // البيانات من الصفوف التالية
-
-      jsonData = dataRows.map(row => {
+    if (sheet) {
+      const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
+      const headers = data[0];
+      const rows = data.slice(1);
+      jsonData = rows.map(row => {
         let obj = {};
         row.forEach((cell, i) => {
           obj[headers[i]] = cell;
         });
 
-        // تحقق من أن الكائن يحتوي على قيم
         const hasValues = Object.values(obj).some(value => value && value.toString().trim() !== '');
         return hasValues ? obj : null;
       }).filter(row => row !== null);
@@ -328,21 +256,93 @@ app.post('/api/excel', async (req, res) => {
     const result = {
       Items: jsonData,
       TotalResults: jsonData.length,
-      TotalPages: Math.ceil(jsonData.length / 10),
+      TotalPages: Math.ceil(jsonData.length / 10)
     };
 
-    // يمكنك تشفير البيانات إذا لزم الأمر
     // const secretKey = 'sawa2020!';
     // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
 
-    cache.set(cacheKey, result);
+    // cache.set(cacheKey, encryptedResult);
 
     res.json({ data: result });
   } catch (error) {
-    console.error('Error fetching or processing the Google Sheets API data:', error.message);
-    res.status(500).send('Error fetching or processing the Google Sheets API data.');
+    console.error('Error fetching or processing the Excel file:', error.message);
+    res.status(500).send('Error fetching or processing the Excel file.');
+
   }
 });
+
+
+
+
+// const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 });
+
+// const sheets = google.sheets('v4');
+
+// // إعداد أوراق جوجل API
+// const auth = new google.auth.GoogleAuth({
+//   keyFile: '../server/secret/data-427402-2096509aa9d6.json',
+//   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+// });
+
+
+
+// app.post('/api/excel', async (req, res) => {
+//   try {
+//     const cacheKey = 'spreadsheetDataEncrypted';
+//     const cachedData = cache.get(cacheKey);
+
+//     if (cachedData) {
+//       return res.json({ data: cachedData });
+//     }
+
+//     const client = await auth.getClient();
+//     const spreadsheetId = '16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE'; // معرّف Google Sheet
+//     const range = 'sawa'; // اسم الورقة أو النطاق الذي تريد استدعاءه
+
+//     const response = await sheets.spreadsheets.values.get({
+//       auth: client,
+//       spreadsheetId,
+//       range,
+//     });
+
+//     const rows = response.data.values;
+//     let jsonData = [];
+
+//     if (rows.length) {
+//       const headers = rows[0]; // الصف الأول هو العناوين
+//       const dataRows = rows.slice(1); // البيانات من الصفوف التالية
+
+//       jsonData = dataRows.map(row => {
+//         let obj = {};
+//         row.forEach((cell, i) => {
+//           obj[headers[i]] = cell;
+//         });
+
+//         // تحقق من أن الكائن يحتوي على قيم
+//         const hasValues = Object.values(obj).some(value => value && value.toString().trim() !== '');
+//         return hasValues ? obj : null;
+//       }).filter(row => row !== null);
+//     }
+
+//     const result = {
+//       Items: jsonData,
+//       TotalResults: jsonData.length,
+//       TotalPages: Math.ceil(jsonData.length / 10),
+//     };
+
+//     // يمكنك تشفير البيانات إذا لزم الأمر
+//     // const secretKey = 'sawa2020!';
+//     // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
+
+//     cache.set(cacheKey, result);
+
+//     res.json({ data: result });
+//   } catch (error) {
+//     console.error('Error fetching or processing the Google Sheets API data:', error.message);
+//     res.status(500).send('Error fetching or processing the Google Sheets API data.');
+//   }
+// });
 
 
 ////////////////////////////////////////////////////
