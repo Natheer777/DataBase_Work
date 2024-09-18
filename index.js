@@ -282,7 +282,7 @@ const sheets = google.sheets('v4');
 // إعداد أوراق جوجل API
 const auth = new google.auth.GoogleAuth({
   // keyFile: 'secret/data-427402-2096509aa9d6.json',
-  keyFile: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON),
+  keyFile: JSON.parse(process.env.JSON),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
