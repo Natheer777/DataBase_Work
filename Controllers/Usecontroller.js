@@ -93,16 +93,20 @@ class UserController {
   }
   static async getSentence() {
     try {
-      const result = await userModel.getSentence();
-      if (!result || result.length === 0) {
-        return null; // Return null if no data is found
-      }
-      return result;
+        const result = await userModel.getSentence();
+
+        if (!Array.isArray(result) || result.length === 0) {
+            return null; // Return null if no data is found
+        }
+
+        return result;
     } catch (error) {
-      console.error('Error fetching sentence data:', error.message);
-      throw new Error('Error fetching sentence data.');
+        console.error('Error fetching sentence data:', error.message);
+        throw new Error('Error fetching sentence data.');
     }
-  }
+}
+
+  
   static async getSuggestions(req, res) {
     try{
       const result = await userModel.getSuggestions()

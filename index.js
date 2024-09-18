@@ -226,6 +226,7 @@ app.post('/api/excel', async (req, res) => {
 
     if (cachedData) {
       // إذا كانت البيانات موجودة بالفعل في الذاكرة المؤقتة، إرسالها مشفرة
+
       return res.json({ data: cachedData });
     }
 
@@ -300,6 +301,8 @@ app.get('/delete', (req, res) => {
 
 
 ////////////////////////////////////////////////////
+
+
 async function getExcelData() {
   try {
     const response = await axios.post('https://database-work.onrender.com/api/excel');
@@ -309,6 +312,9 @@ async function getExcelData() {
     return []; // Return an empty array on error
   }
 }
+
+
+
 
 async function getSuggestions() {
   try {

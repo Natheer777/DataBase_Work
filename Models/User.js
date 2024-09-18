@@ -23,17 +23,18 @@ class UserModel {
     })
   }
 
-  static getSentence() {
+  static async getSentence() {
     return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM sentences', [], (error, results) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(results.rows || results); // Adjust based on your database driver
-      });
+        db.query('SELECT * FROM sentences', (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results);
+        });
     });
-  }
+}
 
+  
 
   static addNewUser(kana, meaning, short, writings) {
     return new Promise((resolve, reject) => {
