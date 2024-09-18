@@ -23,30 +23,30 @@ const { google } = require('googleapis');
 
 const app = express();
 const port = process.env.PORT || 3000;
-// app.use(cors());
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   }
-  
-// }));
-
+app.use(cors());
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000','https://accounts.google.com','https://oauth2.googleapis.com' ,'googleapis.com']
+    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      console.error(`Blocked by CORS: Origin ${origin} is not allowed.`);
       callback(new Error('Not allowed by CORS'));
     }
   }
+  
 }));
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000','https://accounts.google.com','https://oauth2.googleapis.com' ,'googleapis.com']
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       console.error(`Blocked by CORS: Origin ${origin} is not allowed.`);
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   }
+// }));
 
 
 app.use(bodyParser.json());
@@ -215,62 +215,6 @@ app.post('/change-credentials', (req, res) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
-
-
-// const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 }); // تقليل مدة الكاش
-
-// app.post('/api/excel', async (req, res) => {
-//   try {
-//     const cacheKey = 'spreadsheetDataEncrypted';
-//     const cachedData = cache.get(cacheKey);
-
-//     if (cachedData) {
-//       return res.json({ data: cachedData });
-//     }
-
-//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-//       responseType: 'arraybuffer',
-//     });
-
-//     const workbook = xlsx.read(response.data, { type: 'buffer' });
-//     const sheetName = 'sawa';
-//     const sheet = workbook.Sheets[sheetName];
-//     let jsonData = [];
-
-//     if (sheet) {
-//       const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-//       const headers = data[0];
-//       const rows = data.slice(1);
-//       jsonData = rows.map(row => {
-//         let obj = {};
-//         row.forEach((cell, i) => {
-//           obj[headers[i]] = cell;
-//         });
-
-//         const hasValues = Object.values(obj).some(value => value && value.toString().trim() !== '');
-//         return hasValues ? obj : null;
-//       }).filter(row => row !== null);
-//     }
-
-//     const result = {
-//       Items: jsonData,
-//       TotalResults: jsonData.length,
-//       TotalPages: Math.ceil(jsonData.length / 10)
-//     };
-
-//     // const secretKey = 'sawa2020!';
-//     // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
-
-//     // cache.set(cacheKey, encryptedResult);
-
-//     res.json({ data: result });
-//   } catch (error) {
-//     console.error('Error fetching or processing the Excel file:', error.message);
-//     res.status(500).send('Error fetching or processing the Excel file.');
-
-//   }
-// });
 
 
 
@@ -450,3 +394,61 @@ setInterval(() => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+
+
+// const cache = new NodeCache({ stdTTL: 60, checkperiod: 60 }); // تقليل مدة الكاش
+
+// app.post('/api/excel', async (req, res) => {
+//   try {
+//     const cacheKey = 'spreadsheetDataEncrypted';
+//     const cachedData = cache.get(cacheKey);
+
+//     if (cachedData) {
+//       return res.json({ data: cachedData });
+//     }
+
+//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
+//       responseType: 'arraybuffer',
+//     });
+
+//     const workbook = xlsx.read(response.data, { type: 'buffer' });
+//     const sheetName = 'sawa';
+//     const sheet = workbook.Sheets[sheetName];
+//     let jsonData = [];
+
+//     if (sheet) {
+//       const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
+//       const headers = data[0];
+//       const rows = data.slice(1);
+//       jsonData = rows.map(row => {
+//         let obj = {};
+//         row.forEach((cell, i) => {
+//           obj[headers[i]] = cell;
+//         });
+
+//         const hasValues = Object.values(obj).some(value => value && value.toString().trim() !== '');
+//         return hasValues ? obj : null;
+//       }).filter(row => row !== null);
+//     }
+
+//     const result = {
+//       Items: jsonData,
+//       TotalResults: jsonData.length,
+//       TotalPages: Math.ceil(jsonData.length / 10)
+//     };
+
+//     // const secretKey = 'sawa2020!';
+//     // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
+
+//     // cache.set(cacheKey, encryptedResult);
+
+//     res.json({ data: result });
+//   } catch (error) {
+//     console.error('Error fetching or processing the Excel file:', error.message);
+//     res.status(500).send('Error fetching or processing the Excel file.');
+
+//   }
+// });
+
