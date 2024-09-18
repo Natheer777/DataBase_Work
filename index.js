@@ -1,12 +1,10 @@
 const express = require('express');
 const router = require('./Routers/Route');
 const bodyParser = require('body-parser');
-// const db = require('./Config/Dbnode')
 const cors = require('cors');
 const path = require('path');
 const mysql = require('mysql2');
 const axios = require('axios');
-// const fs = require('fs')
 const mammoth = require("mammoth");
 const xlsx = require('xlsx');
 const CryptoJS = require('crypto-js');
@@ -36,17 +34,7 @@ app.use(cors({
   
 }));
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online', 'http://localhost:5173', 'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000','https://accounts.google.com','https://oauth2.googleapis.com' ,'googleapis.com']
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       console.error(`Blocked by CORS: Origin ${origin} is not allowed.`);
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   }
-// }));
+
 
 
 app.use(bodyParser.json());
@@ -225,11 +213,10 @@ const sheets = google.sheets('v4');
 
 // إعداد أوراق جوجل API
 const auth = new google.auth.GoogleAuth({
-  // keyFile: 'secret/data-427402-2096509aa9d6.json',
-  credentials: JSON.parse(process.env.JSON),
+  keyFile: 'secret/data-427402-2096509aa9d6.json',
+  // credentials: JSON.parse(process.env.JSON),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
-
 
 
 app.post('/api/excel', async (req, res) => {
@@ -238,6 +225,7 @@ app.post('/api/excel', async (req, res) => {
     const cachedData = cache.get(cacheKey);
 
     if (cachedData) {
+      // إذا كانت البيانات موجودة بالفعل في الذاكرة المؤقتة، إرسالها مشفرة
       return res.json({ data: cachedData });
     }
 
@@ -276,19 +264,19 @@ app.post('/api/excel', async (req, res) => {
       TotalPages: Math.ceil(jsonData.length / 10),
     };
 
-    // يمكنك تشفير البيانات إذا لزم الأمر
-    // const secretKey = 'sawa2020!';
-    // const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
+    // تشفير البيانات
+    const secretKey = 'sawa2020!';
+    const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
 
-    cache.set(cacheKey, result);
+    cache.set(cacheKey, encryptedResult);
 
-    res.json({ data: result });
+    // إرسال البيانات المشفرة إلى الجبهة الأمامية
+    res.json({ data: encryptedResult });
   } catch (error) {
     console.error('Error fetching or processing the Google Sheets API data:', error.message);
     res.status(500).send('Error fetching or processing the Google Sheets API data.');
   }
 });
-
 
 ////////////////////////////////////////////////////
 app.use(express.static(path.join(__dirname, 'public')));
@@ -313,15 +301,25 @@ app.get('/delete', (req, res) => {
 
 ////////////////////////////////////////////////////
 async function getExcelData() {
-  const response = await axios.post('http://localhost:3000/api/excel');
-  return response.data.data.Items;
+  try {
+    const response = await axios.post('http://localhost:3000/api/excel');
+    return response.data.data.Items || []; // Ensure it returns an empty array if `Items` is undefined
+  } catch (error) {
+    console.error('Error fetching Excel data:', error);
+    return []; // Return an empty array on error
+  }
 }
 
-// جلب البيانات من API getSuggestions
 async function getSuggestions() {
-  const response = await axios.get('http://localhost:3000/getSuggestions');
-  return response.data;
+  try {
+    const response = await axios.get('http://localhost:3000/getSuggestions');
+    return response.data || []; // Ensure it returns an empty array if `data` is undefined
+  } catch (error) {
+    console.error('Error fetching suggestions:', error);
+    return []; // Return an empty array on error
+  }
 }
+
 
 // حذف البيانات المتطابقة من قاعدة البيانات
 function deleteSuggestionFromDB(suggestion) {
@@ -338,52 +336,56 @@ function deleteSuggestionFromDB(suggestion) {
 // الوظيفة الرئيسية لمقارنة وحذف البيانات
 async function compareAndDelete() {
   try {
-      const excelData = await getExcelData();
-      const suggestions = await getSuggestions();
+    const excelData = await getExcelData();
+    const suggestions = await getSuggestions();
 
-      // الحقول التي سيتم مقارنتها
-      const fields = [
-          'المعنى',
-          'التصنيف النحوي',
-          'الأمثلة',
-          'kana',
-          'meaning',
-          'short',
-          'writings',
-          'الكلمة',
-          'النطق',
-          'التعريف',
-          'الاشتقاقات والتصريفات',
-          'الملاحظات الثقافية',
-          'المصادر والمراجع',
-          'الأمثلة الصوتية',
-          'المرادف',
-          'العبارات الاصطلاحية',
-          'الاستعمالات الشائعة',
-          'الرموز  والأصل اللغوي',
-          'الصور',
-          'التعليقات والملاحظات',
-          'الفئة',
-          'الأمثلة السياقية',
-          'الاختصارات',
-          'التنبيهات النحوية'
-      ];
+    if (!Array.isArray(excelData) || !Array.isArray(suggestions)) {
+      console.error('Invalid data format received.');
+      return;
+    }
 
-      // قارن بين بيانات excel و getSuggestions
-      suggestions.forEach(suggestionItem => {
-          const found = excelData.find(item => {
-              return fields.some(field => item[field] === suggestionItem.Suggestion);
-          });
+    const fields = [
+      'المعنى',
+      'التصنيف النحوي',
+      'الأمثلة',
+      'kana',
+      'meaning',
+      'short',
+      'writings',
+      'الكلمة',
+      'النطق',
+      'التعريف',
+      'الاشتقاقات والتصريفات',
+      'الملاحظات الثقافية',
+      'المصادر والمراجع',
+      'الأمثلة الصوتية',
+      'المرادف',
+      'العبارات الاصطلاحية',
+      'الاستعمالات الشائعة',
+      'الرموز  والأصل اللغوي',
+      'الصور',
+      'التعليقات والملاحظات',
+      'الفئة',
+      'الأمثلة السياقية',
+      'الاختصارات',
+      'التنبيهات النحوية'
+    ];
 
-          if (found) {
-              deleteSuggestionFromDB(suggestionItem.Suggestion);
-          }
+    suggestions.forEach(suggestionItem => {
+      const found = excelData.find(item => {
+        return fields.some(field => item[field] === suggestionItem.Suggestion);
       });
 
+      if (found) {
+        deleteSuggestionFromDB(suggestionItem.Suggestion);
+      }
+    });
+
   } catch (error) {
-      console.error('حدث خطأ:', error);
+    console.error('حدث خطأ:', error);
   }
 }
+
 
 // تشغيل الوظيفة تلقائيًا كل ثانية (1000 مللي ثانية)
 setInterval(() => {

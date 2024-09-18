@@ -91,12 +91,16 @@ class UserController {
       res.status(500).send({ error: 'Error searching word' });
     }
   }
-  static async getSentence(req, res) {
-    try{
-      const result = await userModel.getSentence()
-      res.send(result)
-    }catch{
-      res.status(500).send("Error fetch sentence")
+  static async getSentence() {
+    try {
+      const result = await userModel.getSentence();
+      if (!result || result.length === 0) {
+        return null; // Return null if no data is found
+      }
+      return result;
+    } catch (error) {
+      console.error('Error fetching sentence data:', error.message);
+      throw new Error('Error fetching sentence data.');
     }
   }
   static async getSuggestions(req, res) {

@@ -23,16 +23,15 @@ class UserModel {
     })
   }
 
-
-  static getSentence(){
-    return new Promise((resolve , reject) =>{
-      db.query('SELECT * FROM sentences' ,[],(error , result) =>{
-        if(error){
-          return reject(error)
+  static getSentence() {
+    return new Promise((resolve, reject) => {
+      db.query('SELECT * FROM sentences', [], (error, results) => {
+        if (error) {
+          return reject(error);
         }
-        resolve(result)
-      })
-    })
+        resolve(results.rows || results); // Adjust based on your database driver
+      });
+    });
   }
 
 
