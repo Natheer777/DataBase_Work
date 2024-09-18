@@ -24,7 +24,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
+    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'https://database-work.onrender.com'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
@@ -302,7 +302,7 @@ app.get('/delete', (req, res) => {
 ////////////////////////////////////////////////////
 async function getExcelData() {
   try {
-    const response = await axios.post('http://localhost:3000/api/excel');
+    const response = await axios.post('https://database-work.onrender.com/api/excel');
     return response.data.data.Items || []; // Ensure it returns an empty array if `Items` is undefined
   } catch (error) {
     console.error('Error fetching Excel data:', error);
@@ -312,7 +312,7 @@ async function getExcelData() {
 
 async function getSuggestions() {
   try {
-    const response = await axios.get('http://localhost:3000/getSuggestions');
+    const response = await axios.get('https://database-work.onrender.com/getSuggestions');
     return response.data || []; // Ensure it returns an empty array if `data` is undefined
   } catch (error) {
     console.error('Error fetching suggestions:', error);
