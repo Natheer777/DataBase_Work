@@ -5,6 +5,7 @@ const NodeCache = require('node-cache');
 
 const UserController = require('../Controllers/Usecontroller');
 
+
 router.get('/allusers', UserController.getAllUsers);
 router.post('/allWords', UserController.searchWords);
 router.post('/addusers', UserController.addUser);

@@ -3,7 +3,7 @@ const router = require('./Routers/Route');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const axios = require('axios');
 const mammoth = require("mammoth");
 const xlsx = require('xlsx');
@@ -24,7 +24,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'https://database-work.onrender.com'];
+    const allowedOrigins = ['https://natheer777.github.io', 'https://ajls.online','http://localhost:5173' ,'https://dictionary-backend-zrxn.onrender.com', 'http://localhost:3000'];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
@@ -213,7 +213,7 @@ const sheets = google.sheets('v4');
 
 // إعداد أوراق جوجل API
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'secret/data-427402-2096509aa9d6.json',
+  // keyFile: 'secret/data-427402-2096509aa9d6.json',
   credentials: JSON.parse(process.env.JSON),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
