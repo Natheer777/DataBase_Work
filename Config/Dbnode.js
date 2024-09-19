@@ -136,7 +136,7 @@ function updateDataEverySecond() {
         console.log('تم حذف البيانات المتكررة بنجاح');
       });
     });
-  }, 1000); 
+  }, 3600000); 
 }
 
 updateDataEverySecond();
