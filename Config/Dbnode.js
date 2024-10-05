@@ -81,6 +81,7 @@ const db = mysql.createPool({
   // port: '3306',
   // password: 'Te1G6CP4sznNaOGqQypN',
   // database: 'betejqbmtak0eaj63ctn'
+  
 });
 
 db.getConnection((err, connection) => {
@@ -136,7 +137,7 @@ function updateDataEverySecond() {
         console.log('تم حذف البيانات المتكررة بنجاح');
       });
     });
-  }, 3600000); 
+  }, 10000); 
 }
 
 updateDataEverySecond();

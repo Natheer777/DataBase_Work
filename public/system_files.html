@@ -1,544 +1,646 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- روابط JavaScript الخاصة بـ Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Document</title>
     <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
 
-        h1, h2 {
-            color: #003366;
-            margin: 0;
-        }
+      h1,
+      h2 {
+        color: #003366;
+        margin: 0;
+      }
 
-        .section {
-            background-color: #ffffff;
-            border: 1px solid #cce0ff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            margin: 20px;
-        }
+      .section {
+        background-color: #ffffff;
+        border: 1px solid #cce0ff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+        margin: 20px;
+      }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
 
-        table, th, td {
-            border: 1px solid black;
-        }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
 
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
+      th,
+      td {
+        padding: 6px;
+        text-align: center;
+      }
+      td {
+        text-align: start;
+      }
 
-        button {
-            padding: 5px 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+      button {
+        padding: 5px 10px !important;
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
 
-        button:hover {
-            background-color: darkred;
-        }
+  
 
-        input[type="file"], input[type="text"], input[type="password"] {
-            border: 1px solid #b3cde0;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 20px;
-            width: calc(100% - 22px);
-        }
+      input[type="file"],
+      input[type="text"],
+      input[type="password"] {
+        border: 1px solid #b3cde0;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 20px;
+        width: calc(100% - 22px);
+      }
 
-        .btn-upload, .btn-delete, .btn-upload-all {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 3px;
-            margin: 5px;
-            font-size: 14px;
-        }
+      .btn-upload,
+      .btn-delete,
+      .btn-upload-all {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 5px 10px !important;
+        cursor: pointer;
+        border-radius: 3px;
+        margin: 5px;
+        font-size: 14px;
+      }
 
-        .btn-delete {
-            background-color: #ff4d4d;
-        }
+      .btn-delete {
+        background-color: #c70e0e;
+        width: 30px;
+        height: 28px;
+      }
 
-        .btn-upload:hover {
-            background-color: #45a049;
-        }
+      .btn-upload:hover {
+        background-color: #45a049;
+      }
 
-        .btn-delete:hover {
-            background-color: #ff1a1a;
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
+      .btn-delete:hover {
+        background-color: #c70e0e;
+      }
+      .progress-bar {
+        width: 100%;
+        background-color: #f3f3f3;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
 
-        .progress-bar-inner {
-            height: 20px;
-            width: 0;
-            background-color: #003366;
-            transition: width 0.3s ease;
-        }
+      .progress-bar-inner {
+        height: 20px;
+        width: 0;
+        background-color: #003366;
+        transition: width 0.3s ease;
+      }
 
-        #suggestions-list {
-            list-style: none;
-            font-weight: bold;
-            font-size: 25px;
-            text-align: center;
-            padding: 0;
-        }
+      #suggestions-list {
+        list-style: none;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        padding: 0;
+      }
+      #suggestions-list button {
+        width: 30px;
+        height: 28px;
+      }
 
-        #suggestions-list p {
-            border: 2px solid rgb(112, 112, 240);
-            border-radius: 20px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
+      #suggestions-list p {
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        display: flex;
+      }
+      #suggestions-list p span {
+        width: -webkit-fill-available;
+      }
 
-        h1 {
-            text-align: center;
-        }
+      h1 {
+        text-align: center;
+      }
 
-        section {
-            margin-bottom: 30px;
-        }
+      section {
+        margin-bottom: 30px;
+      }
 
-        /* Sidebar Styles */
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            background-color: #003366;
-            color: white;
-            transition: 0.3s;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-        }
-        .sidebar ul li a{
-            color: white;
-            font-size: 15px;
-            list-style: none;
-        }
+      /* Sidebar Styles */
 
-        .sidebar.open {
-            left: 0;
-        }
+      .main-content {
+        margin-left: 0;
+        transition: margin-left 0.3s;
+        flex: 1;
+      }
 
-        .sidebar .closebtn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 36px;
-            cursor: pointer;
-        }
+      .main-content.shift {
+        margin-left: 250px;
+      }
 
-        .main-content {
-            margin-left: 0;
-            transition: margin-left 0.3s;
-            flex: 1;
-        }
+      .btn-sidebar {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1;
+        background-color: whitesmoke;
+      }
 
-        .main-content.shift {
-            margin-left: 250px;
-        }
+      .navbar {
+        margin-top: 0 ;
+        margin-bottom: 0 ;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0707cb;
+        padding: 10px 20px;
+      }
 
-        .btn-sidebar {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1;
-            background-color: whitesmoke;
-            
-        }
+      .logo {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
 
+      .nav-links {
+        list-style: none;
+        display: flex;
+      }
 
-        @media screen and (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-                left: -200px;
-            }
+  
 
-            .sidebar.open {
-                left: 0;
-            }
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        padding: 10px;
+      }
 
-            .main-content.shift {
-                margin-left: 0;
-            }
+      .nav-links a:hover {
+        background-color: #555;
+        border-radius: 5px;
+      }
 
-            .btn-sidebar {
-                top: 10px;
-                left: 10px;
-            }
-        }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .hamburger .line {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 5px 0;
+      }
+
+      .nav-links {
+        position: absolute;
+        right: 0;
+        height: 100vh;
+        top: 0;
+        background-color: #333;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        display: none;
+      }
+
+      .nav-links li {
+        margin: 30px 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+      .navbar-toggler {
+        display: none;
+      }
+      .navbar{
+        padding-top: 30px;
+        padding-bottom: 30px;
+      }
+      .navbar ul {
+        list-style: none;
+        display: ruby-text;
+        font-size: 15px;
+        color: white;
+      }
+      .navbar-nav{
+        padding: 0;
+      }
+  
+      .navbar ul li a {
+        border-radius: 50px;
+        color: #0707cb;
+        font-weight: bold;
+        text-decoration: none;
+        border: 2px white solid;
+        padding: 6px;
+        background-color: white;
+      }
+      input#newUsername {
+        text-align: end;
+      }
+      input#newPassword {
+        text-align: end;
+      }
+      .btn-redirect {
+        margin-left: 10px;
+        background-color: #c70e0e;
+      }
+      input#fileInput {
+        color: transparent;
+        direction: rtl;
+      }
+      .add {
+        background-color: #4caf50;
+      }
     </style>
-</head>
-<body>
-    <div id="mySidebar" class="sidebar">
-        <span class="closebtn" id="closeSidebar">&times;</span>
-        <h2>الجانبية</h2>
-        <ul>
-            <li><a href="#files">الملفات</a></li>
-            <li><a href="#sug">المقترحات</a></li>
-            <li><a href="#name">تغيير الاسم وكلمة السر</a></li>
-            <!-- Add more sections here -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light section">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse " id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#name">تغيير الاسم وكلمة المرور</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#sug">الكلمات المقترحة</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#files">الملفات</a>
+          </li>
         </ul>
-    </div>
+      </div>
+    </nav>
 
     <!-- Page content -->
     <div id="main" class="main-content">
-        <span id="openSidebar" class="btn-sidebar">&#9776;</span>
+      <!-- Existing content -->
+      <section class="section" id="files">
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input
+            type="file"
+            id="fileInput"
+            name="file"
+            accept=".docx"
+            multiple
+          />
+          <button id="uploadAllBtn" class="btn-upload-all">تحميل</button>
+        </form>
+        <div id="fileStatuses" class="file-status"></div>
+        <p id="status"></p>
+      </section>
 
-        <!-- Existing content -->
-        <section class="section" id="files">
-            <h2>Upload .docx Files</h2>
-            <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="fileInput" name="file" accept=".docx" multiple />
-                <button id="uploadAllBtn" class="btn-upload-all">رفع جميع الملفات</button>
-            </form>
-            <div id="fileStatuses" class="file-status"></div>
-            <p id="status"></p>
-        </section>
+      <section class="section">
+        <h1>الملفات</h1>
+        <table class="file-list">
+          <thead>
+            <tr>
+              <th>اسم الملف</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="file-list">
+            <!-- Files will be inserted here -->
+          </tbody>
+        </table>
+      </section>
 
-        <section class="section">
-            <h1>جميع الملفات</h1>
-            <table class="file-list">
-                <thead>
-                    <tr>
-                        <th>اسم الملف</th>
-                        <th>حذف</th>
-                    </tr>
-                </thead>
-                <tbody id="file-list">
-                    <!-- Files will be inserted here -->
-                </tbody>
-            </table>
-        </section>
+      <section id="sug" class="section">
+        <h1>الكلمات المقترحة</h1>
+        <ul id="suggestions-list"></ul>
+      </section>
 
-        <section id="sug">
-            <h1>المقترحات</h1>
-            <ul id="suggestions-list"></ul>
-        </section>
-
-        <section class="section" id="name">
-            <h2>تغيير الاسم وكلمة المرور</h2>
-            <form id="changeForm">
-                <input type="text" id="newUsername" placeholder="اسم المستخدم الجديد" required>
-                <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
-                <button type="submit">تحديث</button>
-            </form>
-            <p id="changeMessage"></p>
-        </section>
+      <section class="section" id="name">
+        <h2>تغيير الاسم وكلمة المرور</h2>
+        <form id="changeForm">
+          <input
+            type="text"
+            id="newUsername"
+            placeholder="اسم المستخدم الجديد"
+            required
+          />
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="كلمة المرور الجديدة"
+            required
+          />
+          <button type="submit">تحديث</button>
+        </form>
+        <p id="changeMessage"></p>
+      </section>
     </div>
     <script>
+      // Sidebar toggle functionality
 
+      const fileInput = document.getElementById("fileInput");
+      const fileStatuses = document.getElementById("fileStatuses");
+      const uploadAllBtn = document.getElementById("uploadAllBtn");
+      let selectedFiles = [];
 
-        // Sidebar toggle functionality
-        const openSidebar = document.getElementById('openSidebar');
-        const closeSidebar = document.getElementById('closeSidebar');
-        const sidebar = document.getElementById('mySidebar');
-        const mainContent = document.getElementById('main');
+      fileInput.addEventListener("change", () => {
+        fileStatuses.innerHTML = "";
+        selectedFiles = Array.from(fileInput.files);
 
-        openSidebar.onclick = () => {
-            sidebar.classList.add('open');
-            mainContent.classList.add('shift');
-        };
+        selectedFiles.forEach((file, index) => {
+          const fileStatus = document.createElement("div");
+          const fileName = document.createElement("span");
+          fileName.textContent = file.name;
 
-        closeSidebar.onclick = () => {
-            sidebar.classList.remove('open');
-            mainContent.classList.remove('shift');
-        };
+          const uploadBtn = document.createElement("button");
+          uploadBtn.textContent = "تحميل";
+          uploadBtn.className = "btn-upload";
+          uploadBtn.onclick = () => uploadFile(file, index);
 
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "حذف";
+          deleteBtn.className = "btn-delete";
+          deleteBtn.onclick = () => removeFile(index);
 
-
-        const fileInput = document.getElementById('fileInput');
-        const fileStatuses = document.getElementById('fileStatuses');
-        const uploadAllBtn = document.getElementById('uploadAllBtn');
-        let selectedFiles = [];
-
-        fileInput.addEventListener('change', () => {
-            fileStatuses.innerHTML = '';
-            selectedFiles = Array.from(fileInput.files);
-
-            selectedFiles.forEach((file, index) => {
-                const fileStatus = document.createElement('div');
-                const fileName = document.createElement('span');
-                fileName.textContent = file.name;
-
-                const uploadBtn = document.createElement('button');
-                uploadBtn.textContent = 'رفع';
-                uploadBtn.className = 'btn-upload';
-                uploadBtn.onclick = () => uploadFile(file, index);
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'حذف';
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.onclick = () => removeFile(index);
-
-                fileStatus.appendChild(fileName);
-                fileStatus.appendChild(uploadBtn);
-                fileStatus.appendChild(deleteBtn);
-                fileStatuses.appendChild(fileStatus);
-            });
+          fileStatus.appendChild(fileName);
+          fileStatus.appendChild(uploadBtn);
+          fileStatus.appendChild(deleteBtn);
+          fileStatuses.appendChild(fileStatus);
         });
+      });
 
-        function removeFile(index) {
-            selectedFiles.splice(index, 1);
-            updateFileList();
-        }
+      function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        updateFileList();
+      }
 
-        function updateFileList() {
-            fileStatuses.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const fileStatus = document.createElement('div');
-                const fileName = document.createElement('span');
-                fileName.textContent = file.name;
+      function updateFileList() {
+        fileStatuses.innerHTML = "";
+        selectedFiles.forEach((file, index) => {
+          const fileStatus = document.createElement("div");
+          const fileName = document.createElement("span");
+          fileName.textContent = file.name;
 
-                const uploadBtn = document.createElement('button');
-                uploadBtn.textContent = 'رفع';
-                uploadBtn.className = 'btn-upload';
-                uploadBtn.onclick = () => uploadFile(file, index);
+          const uploadBtn = document.createElement("button");
+          uploadBtn.textContent = "رفع";
+          uploadBtn.className = "btn-upload";
+          uploadBtn.onclick = () => uploadFile(file, index);
 
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'حذف';
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.onclick = () => removeFile(index);
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "حذف";
+          deleteBtn.className = "btn-delete";
+          deleteBtn.onclick = () => removeFile(index);
 
-                fileStatus.appendChild(fileName);
-                fileStatus.appendChild(uploadBtn);
-                fileStatus.appendChild(deleteBtn);
-                fileStatuses.appendChild(fileStatus);
-            });
-        }
-
-        uploadAllBtn.addEventListener('click', async (event) => {
-            event.preventDefault();
-
-            if (selectedFiles.length === 0) {
-                document.getElementById('status').textContent = 'لم يتم اختيار الملفات';
-                return;
-            }
-
-            document.getElementById('status').textContent = 'رفع جميع الملفات';
-
-            for (let i = 0; i < selectedFiles.length; i++) {
-                await uploadFile(selectedFiles[i], i);
-            }
-
-            document.getElementById('status').textContent = 'تم رفع جميع الملفات بنجاج !';
+          fileStatus.appendChild(fileName);
+          fileStatus.appendChild(uploadBtn);
+          fileStatus.appendChild(deleteBtn);
+          fileStatuses.appendChild(fileStatus);
         });
+      }
 
-        async function uploadFile(file, index) {
-            const formData = new FormData();
-            formData.append('file', file);
+      uploadAllBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
 
-            const fileStatus = fileStatuses.children[index];
-
-            const progressBar = document.createElement('div');
-            progressBar.className = 'progress-bar';
-            const progressBarInner = document.createElement('div');
-            progressBarInner.className = 'progress-bar-inner';
-            progressBar.appendChild(progressBarInner);
-
-            fileStatus.appendChild(progressBar);
-
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                let progress = 0;
-                const interval = setInterval(() => {
-                    if (progress < 100) {
-                        progress += 10;
-                        progressBarInner.style.width = `${progress}%`;
-                    } else {
-                        clearInterval(interval);
-                        progressBarInner.style.width = '100%';
-
-                        fileStatus.querySelector('span').textContent = `${file.name} - انتهى التحميل`;
-                    }
-                }, 200);
-
-            } catch (error) {
-                console.error('Error uploading file:', error);
-                document.getElementById('status').textContent = `Error uploading ${file.name}: ${error.message}`;
-            }
+        if (selectedFiles.length === 0) {
+          document.getElementById("status").textContent = "";
+          return;
         }
 
-        async function fetchFiles() {
-            try {
-                const response = await fetch('/api/files');
-                console.log(response);
-                const files = await response.json();
+        document.getElementById("status").textContent = "رفع جميع الملفات";
 
-                const fileList = document.getElementById('file-list');
-                fileList.innerHTML = '';
-
-                files.forEach(file => {
-                    const row = document.createElement('tr');
-                    const fileIdCell = document.createElement('td');
-                    const actionCell = document.createElement('td');
-                    const deleteButton = document.createElement('button');
-
-                    fileIdCell.textContent = file.file_id;
-                    deleteButton.textContent = 'حذف';
-                    deleteButton.className = 'btn-delete';
-                    deleteButton.onclick = () => deleteFile(file.file_id);
-
-                    actionCell.appendChild(deleteButton);
-                    row.appendChild(fileIdCell);
-                    row.appendChild(actionCell);
-
-                    fileList.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error fetching files:', error);
-            }
+        for (let i = 0; i < selectedFiles.length; i++) {
+          await uploadFile(selectedFiles[i], i);
         }
 
-        async function deleteFile(fileId) {
-            if (confirm(`Are you sure you want to delete file with ID ${fileId}?`)) {
-                try {
-                    const response = await fetch(`/delete-file/${fileId}`, { method: 'DELETE' });
-                    if (response.ok) {
-                        alert('File deleted successfully.');
-                        fetchFiles();
-                    } else {
-                        alert('Error deleting file.');
-                    }
-                } catch (error) {
-                    console.error('Error deleting file:', error);
-                }
+        document.getElementById("status").textContent =
+          "تم رفع جميع الملفات بنجاج !";
+      });
+
+      async function uploadFile(file, index) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const fileStatus = fileStatuses.children[index];
+
+        const progressBar = document.createElement("div");
+        progressBar.className = "progress-bar";
+        const progressBarInner = document.createElement("div");
+        progressBarInner.className = "progress-bar-inner";
+        progressBar.appendChild(progressBarInner);
+
+        fileStatus.appendChild(progressBar);
+
+        try {
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          let progress = 0;
+          const interval = setInterval(() => {
+            if (progress < 100) {
+              progress += 10;
+              progressBarInner.style.width = `${progress}%`;
+            } else {
+              clearInterval(interval);
+              progressBarInner.style.width = "100%";
+
+              fileStatus.querySelector(
+                "span"
+              ).textContent = `${file.name} - انتهى التحميل`;
             }
+          }, 200);
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          document.getElementById(
+            "status"
+          ).textContent = `Error uploading ${file.name}: ${error.message}`;
         }
+      }
 
-        window.onload = fetchFiles;
+      async function fetchFiles() {
+        try {
+          const response = await fetch("/api/files");
+          console.log(response);
+          const files = await response.json();
 
-        document.getElementById('changeForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const newUsername = document.getElementById('newUsername').value;
-        const newPassword = document.getElementById('newPassword').value;
+          const fileList = document.getElementById("file-list");
+          fileList.innerHTML = "";
 
-        const response = await fetch('/change-credentials', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          files.forEach((file) => {
+            const row = document.createElement("tr");
+            const fileIdCell = document.createElement("td");
+            const actionCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
+
+            fileIdCell.textContent = file.file_id;
+            deleteButton.textContent = "X";
+            deleteButton.className = "btn-delete";
+            deleteButton.onclick = () => deleteFile(file.file_id);
+
+            actionCell.appendChild(deleteButton);
+            row.appendChild(fileIdCell);
+            row.appendChild(actionCell);
+
+            fileList.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching files:", error);
+        }
+      }
+
+      async function deleteFile(fileId) {
+        if (
+          confirm(`Are you sure you want to delete file with ID ${fileId}?`)
+        ) {
+          try {
+            const response = await fetch(`/delete-file/${fileId}`, {
+              method: "DELETE",
+            });
+            if (response.ok) {
+              alert("File deleted successfully.");
+              fetchFiles();
+            } else {
+              alert("Error deleting file.");
+            }
+          } catch (error) {
+            console.error("Error deleting file:", error);
+          }
+        }
+      }
+
+      window.onload = fetchFiles;
+
+      document
+        .getElementById("changeForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const newUsername = document.getElementById("newUsername").value;
+          const newPassword = document.getElementById("newPassword").value;
+
+          const response = await fetch("/change-credentials", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ newUsername, newPassword }),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            document.getElementById("changeMessage").textContent =
+              "تم تحديث بيانات الدخول بنجاح";
+          } else {
+            document.getElementById("changeMessage").textContent =
+              "خطأ في تحديث بيانات الدخول";
+          }
         });
 
-        const result = await response.json();
-        if (result.success) {
-            document.getElementById('changeMessage').textContent = 'تم تحديث بيانات الدخول بنجاح';
-        } else {
-            document.getElementById('changeMessage').textContent = 'خطأ في تحديث بيانات الدخول';
-        }
-    });
-
-
-    function fetchSuggestions() {
-    fetch('https://database-work.onrender.com/getSuggestions')  // Replace with your API URL
-        .then(response => response.json())
-        .then(data => {
+      function fetchSuggestions() {
+        fetch("https://88.223.92.93:443/getSuggestions") // Replace with your API URL
+          .then((response) => response.json())
+          .then((data) => {
             displaySuggestions(data);
-        })
-        .catch(error => {
-            console.error('Error fetching suggestions:', error);
-        });
-}
+          })
+          .catch((error) => {
+            console.error("Error fetching suggestions:", error);
+          });
+      }
 
-// Function to display the suggestions in the list
-// Function to display the suggestions in the list
-function displaySuggestions(suggestions) {
-    const suggestionsList = document.getElementById('suggestions-list');
-    suggestionsList.innerHTML = '';
+      // Function to display the suggestions in the list
+      function displaySuggestions(suggestions) {
+        const suggestionsList = document.getElementById("suggestions-list");
+        suggestionsList.innerHTML = "";
 
-    suggestions.forEach(suggestion => {
-        const listItem = document.createElement('p');
+        suggestions.forEach((suggestion) => {
+          const listItem = document.createElement("p");
 
-        const text = document.createElement('span');
-        text.textContent = suggestion.Suggestion; // Assuming suggestion has a "Suggestion" field
-
-        // Create button to redirect to the link
-        const redirectButton = document.createElement('button');
-        redirectButton.textContent = 'عرض صفحة الاكسل';
-        redirectButton.className = 'btn-redirect';
-        redirectButton.onclick = () => {
+          // Create button to redirect to the link
+          const redirectButton = document.createElement("button");
+          redirectButton.textContent = "+";
+          redirectButton.className = "btn-redirect add";
+          redirectButton.onclick = () => {
             window.location.href = `https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/edit?gid=0#gid=0`; // Redirect to the URL
-        };
+          };
 
-        // Create delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'حذف';
-        deleteButton.className = 'btn-redirect';
-        deleteButton.onclick = () => deleteSuggestion(suggestion.id);
+          const text = document.createElement("span");
+          text.textContent = suggestion.Suggestion; // Assuming suggestion has a "Suggestion" field
+          // Create delete button
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "X";
+          deleteButton.className = "btn-redirect";
+          deleteButton.onclick = () => deleteSuggestion(suggestion.id);
 
-        // Append elements
-        listItem.appendChild(text);
-        listItem.appendChild(redirectButton); // Add the redirect button
-        listItem.appendChild(deleteButton);
-        suggestionsList.appendChild(listItem);
-    });
-}
+          // Append elements
+          listItem.appendChild(text);
+          listItem.appendChild(redirectButton); // Add the redirect button
+          listItem.appendChild(deleteButton);
+          suggestionsList.appendChild(listItem);
+        });
+      }
 
-// Function to delete a suggestion (no change here)
-function deleteSuggestion(id) {
-    if (confirm('هل أنت متأكد من حذف هذا الاقتراح؟')) {
-        fetch(`https://database-work.onrender.com/deleteSuggestions/${id}`, { method: 'DELETE' })
-            .then(response => {
-                if (response.ok) {
-                    alert('تم حذف الاقتراح بنجاح');
-                    fetchSuggestions();  // Refresh the suggestions list after deletion
-                } else {
-                    alert('حدث خطأ أثناء حذف الاقتراح');
-                }
+      // Function to delete a suggestion (no change here)
+      function deleteSuggestion(id) {
+        if (confirm("هل أنت متأكد من حذف هذا الاقتراح؟")) {
+          fetch(`https://88.223.92.93:443/deleteSuggestions/${id}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("تم حذف الاقتراح بنجاح");
+                fetchSuggestions(); // Refresh the suggestions list after deletion
+              } else {
+                alert("حدث خطأ أثناء حذف الاقتراح");
+              }
             })
-            .catch(error => {
-                console.error('Error deleting suggestion:', error);
+            .catch((error) => {
+              console.error("Error deleting suggestion:", error);
             });
-    }
-}
+        }
+      }
 
-// Fetch and display suggestions when the page loads
-window.onload = function() {
-    fetchFiles();
-    fetchSuggestions();
-};
-
+      // Fetch and display suggestions when the page loads
+      window.onload = function () {
+        fetchFiles();
+        fetchSuggestions();
+      };
     </script>
-
-</body>
+  </body>
 </html>
