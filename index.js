@@ -22,7 +22,8 @@ app.use(cors({
       
       "https://ajls.online",
       "https://api.ajls.online",
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://natheer777.github.io"
      
     ];
     if (allowedOrigins.includes(origin) || !origin) {
