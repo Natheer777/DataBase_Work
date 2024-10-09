@@ -12,24 +12,18 @@ const NodeCache = require("node-cache");
 const iconv = require("iconv-lite");
 const session = require("express-session");
 const { google } = require("googleapis");
-const fs = require("fs");
 require("dotenv").config();
-// const https = require('https');
 
 const app = express();
-const port = process.env.PORT || 8443;
-app.use(cors());
+const port = process.env.PORT || 8000;
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
-      "https://natheer777.github.io",
-      "http://localhost:8443",
-      "https://01f6-95-159-37-75.ngrok-free.app",
+      
       "https://ajls.online",
-      "http://localhost:5173",
-      "https://dictionary-backend-zrxn.onrender.com",
-      "http://88.223.92.93:8443",
-"https://88.223.92.93:8443"
+      "https://api.ajls.online",
+      "http://localhost:5173"
+     
     ];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
@@ -37,43 +31,18 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-}));
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, 
+}))
 
-// const agent = new https.Agent({
-//   rejectUnauthorized: false, // Ignore self-signed certificate errors
-// });
 
-axios.get('http://88.223.92.93:8443/getSentence')
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error('Error fetching sentences:', error);
-  });
-
-axios({
-  method: 'post',
-  url: 'http://88.223.92.93:8443/api/excel',
-})
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
 
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
-// const options = {
-//   key: fs.readFileSync('/root/ssl/root.key'),
-//   cert: [
-//     fs.readFileSync('/root/ssl/intermediate.crt'),
-//     fs.readFileSync('/root/ssl/root.crt')
-//   ],
-// };
+
 
 app.use(session({
   secret: 'sawa',
@@ -322,7 +291,7 @@ app.get("/delete", (req, res) => {
 
 async function getExcelData() {
   try {
-    const response = await axios.post("http://88.223.92.93:8443/api/excel", {},);
+    const response = await axios.post("https://api.ajls.online/api/excel", {},);
     return response.data.data.Items || [];
   } catch (error) {
     console.error("Error fetching Excel data:", error);
@@ -332,7 +301,7 @@ async function getExcelData() {
 
 async function getSuggestions() {
   try {
-    const response = await axios.get('http://88.223.92.93:8443/getSuggestions',);
+    const response = await axios.get('https://api.ajls.online/getSuggestions',);
     return response.data;
   } catch (error) {
     console.error('Error fetching suggestions:', error);

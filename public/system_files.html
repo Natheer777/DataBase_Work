@@ -66,8 +66,6 @@
         border-radius: 4px;
       }
 
-  
-
       input[type="file"],
       input[type="text"],
       input[type="password"] {
@@ -93,7 +91,7 @@
 
       .btn-delete {
         background-color: #c70e0e;
-        width: 30px;
+        /* width: 30px; */
         height: 28px;
       }
 
@@ -129,17 +127,25 @@
       #suggestions-list button {
         width: 30px;
         height: 28px;
+        margin: auto;
+        margin: 6px 5px;
       }
 
-      #suggestions-list p {
+      #suggestions-list li {
         border: 1px solid black;
-        padding: 10px;
         margin-bottom: 10px;
         justify-content: space-between;
         display: flex;
+        padding: 0;
+        height: 40px;
       }
-      #suggestions-list p span {
+      #suggestions-list li span {
+        overflow: auto;
         width: -webkit-fill-available;
+        border-right: 2px solid black;
+        align-items: center;
+        display: flex;
+        justify-content: center;
       }
 
       h1 {
@@ -173,8 +179,8 @@
       }
 
       .navbar {
-        margin-top: 0 ;
-        margin-bottom: 0 ;
+        margin-top: 0;
+        margin-bottom: 0;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -192,8 +198,6 @@
         list-style: none;
         display: flex;
       }
-
-  
 
       .nav-links a {
         color: #fff;
@@ -242,28 +246,33 @@
       .navbar-toggler {
         display: none;
       }
-      .navbar{
+      .navbar {
         padding-top: 30px;
         padding-bottom: 30px;
       }
       .navbar ul {
         list-style: none;
-        display: ruby-text;
+        display: inline-block;
         font-size: 15px;
         color: white;
       }
-      .navbar-nav{
+      .navbar-nav {
         padding: 0;
       }
-  
+
       .navbar ul li a {
         border-radius: 50px;
         color: #0707cb;
         font-weight: bold;
         text-decoration: none;
         border: 2px white solid;
-        padding: 6px;
+        padding: 6px 10px;
         background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        margin: 10px;
       }
       input#newUsername {
         text-align: end;
@@ -297,7 +306,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse " id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" href="#name">تغيير الاسم وكلمة المرور</a>
@@ -574,7 +583,7 @@
         });
 
       function fetchSuggestions() {
-        fetch("https://88.223.92.93:443/getSuggestions") // Replace with your API URL
+        fetch("https://api.ajls.online/getSuggestions") // Replace with your API URL
           .then((response) => response.json())
           .then((data) => {
             displaySuggestions(data);
@@ -590,7 +599,7 @@
         suggestionsList.innerHTML = "";
 
         suggestions.forEach((suggestion) => {
-          const listItem = document.createElement("p");
+          const listItem = document.createElement("li");
 
           // Create button to redirect to the link
           const redirectButton = document.createElement("button");
@@ -619,7 +628,7 @@
       // Function to delete a suggestion (no change here)
       function deleteSuggestion(id) {
         if (confirm("هل أنت متأكد من حذف هذا الاقتراح؟")) {
-          fetch(`https://88.223.92.93:443/deleteSuggestions/${id}`, {
+          fetch(`https://api.ajls.online/deleteSuggestions/${id}`, {
             method: "DELETE",
           })
             .then((response) => {
