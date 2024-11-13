@@ -20,10 +20,10 @@ app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
       
-      "https://ajls.online",
-      "https://api.ajls.online",
+      "https://api.alpt.org",
       "http://localhost:5173",
-      "https://natheer777.github.io"
+      "https://natheer777.github.io",
+      "https://alpt.org"
      
     ];
     if (allowedOrigins.includes(origin) || !origin) {
@@ -292,7 +292,7 @@ app.get("/delete", (req, res) => {
 
 async function getExcelData() {
   try {
-    const response = await axios.post("https://api.ajls.online/api/excel", {},);
+    const response = await axios.post("https://api.alpt.org/api/excel", {},);
     return response.data.data.Items || [];
   } catch (error) {
     console.error("Error fetching Excel data:", error);
@@ -302,12 +302,15 @@ async function getExcelData() {
 
 async function getSuggestions() {
   try {
-    const response = await axios.get('https://api.ajls.online/getSuggestions',);
+    const response = await axios.get('https://api.alpt.org/getSuggestions',);
     return response.data;
   } catch (error) {
     console.error('Error fetching suggestions:', error);
   }
 }
+
+
+
 
 function deleteSuggestionFromDB(suggestion) {
   const query = "DELETE FROM Suggestions WHERE Suggestion = ?";

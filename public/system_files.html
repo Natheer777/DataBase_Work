@@ -583,7 +583,7 @@
         });
 
       function fetchSuggestions() {
-        fetch("https://api.ajls.online/getSuggestions") // Replace with your API URL
+        fetch("https://api.alpt.org/getSuggestions") // Replace with your API URL
           .then((response) => response.json())
           .then((data) => {
             displaySuggestions(data);
@@ -628,7 +628,7 @@
       // Function to delete a suggestion (no change here)
       function deleteSuggestion(id) {
         if (confirm("هل أنت متأكد من حذف هذا الاقتراح؟")) {
-          fetch(`https://api.ajls.online/deleteSuggestions/${id}`, {
+          fetch(`https://api.alpt.org/deleteSuggestions/${id}`, {
             method: "DELETE",
           })
             .then((response) => {
